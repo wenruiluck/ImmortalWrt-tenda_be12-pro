@@ -61,22 +61,6 @@ jobs:
             ${{ runner.os }}-immortalwrt-ccache-${{ matrix.config_name }}-
             ${{ runner.os }}-immortalwrt-ccache-
 
-      - name: Restore Host/Toolchain Cache
-        id: host-toolchain-cache
-        uses: actions/cache/restore@v6.1.0
-        with:
-          path: |
-            staging_dir/host
-            staging_dir/hostpkg
-            staging_dir/toolchain-*
-            build_dir/host
-            build_dir/hostpkg
-            build_dir/toolchain-*
-          key: ${{ runner.os }}-immortalwrt-host-toolchain-${{ matrix.config_name }}-${{ github.ref_name }}-${{ hashFiles('tools/**', 'toolchain/**', 'include/**') }}-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-immortalwrt-host-toolchain-${{ matrix.config_name }}-${{ github.ref_name }}-${{ hashFiles('tools/**', 'toolchain/**', 'include/**') }}-
-            ${{ runner.os }}-immortalwrt-host-toolchain-${{ matrix.config_name }}-
-            ${{ runner.os }}-immortalwrt-host-toolchain-
 
       - name: Initialize Build Environment
         run: |
@@ -159,18 +143,6 @@ jobs:
           path: .ccache
           key: ${{ steps.ccache-restore.outputs.cache-primary-key }}
 
-      - name: Save Host/Toolchain Cache
-        if: success() && steps.host-toolchain-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v6.1.0
-        with:
-          path: |
-            staging_dir/host
-            staging_dir/hostpkg
-            staging_dir/toolchain-*
-            build_dir/host
-            build_dir/hostpkg
-            build_dir/toolchain-*
-          key: ${{ steps.host-toolchain-cache.outputs.cache-primary-key }}
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v7.0.1
