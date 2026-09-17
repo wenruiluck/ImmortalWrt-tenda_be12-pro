@@ -123,6 +123,25 @@ jobs:
           make download -j"$(nproc)"
           find dl -maxdepth 1 -type f -size -1024c -delete
 
+      - name: Prepare Loyalsoldier GeoData
+        run: |
+          set -euo pipefail
+
+          mkdir -p files/usr/share/v2ray files/usr/share/dae
+          echo "⬇️ Downloading Loyalsoldier geosite.dat and geoip.dat..."
+          curl -sSL --retry 3 -o files/usr/share/v2ray/geosite.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat || \
+          curl -sSL --retry 3 -o files/usr/share/v2ray/geosite.dat https://ghproxy.net/https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat
+
+          curl -sSL --retry 3 -o files/usr/share/v2ray/geoip.dat https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat || \
+          curl -sSL --retry 3 -o files/usr/share/v2ray/geoip.dat https://ghproxy.net/https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat
+
+          [ -s files/usr/share/v2ray/geosite.dat ]
+          [ -s files/usr/share/v2ray/geoip.dat ]
+
+          ln -sf ../v2ray/geosite.dat files/usr/share/dae/geosite.dat
+          ln -sf ../v2ray/geoip.dat files/usr/share/dae/geoip.dat
+          ls -lh files/usr/share/v2ray/
+
       - name: Compile Firmware
         run: |
           set -euo pipefail
@@ -200,5 +219,6 @@ jobs:
               - `luci-i18n-ddns-zh-cn`: DDNS 中文语言包
               - `bind-host`: BIND DNS 服务器宿主支持
               - `luci-app-dae`: dae eBPF 高性能透明代理
+              - `Loyalsoldier GeoData`: 集成 Loyalsoldier 增强版 `geosite.dat` & `geoip.dat`（内置 `geosite:gfw` 分流规则支持）
               - `kmod-tun` / `kmod-iptunnel` / `kmod-wireguard`: VPN 隧道基础模块
               - `luci-app-ttyd` / `ttyd`: 网页终端
