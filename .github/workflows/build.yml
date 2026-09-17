@@ -227,7 +227,6 @@ jobs:
               - `luci-app-ddns`: 动态 DNS 配置界面
               - `luci-i18n-ddns-zh-cn`: DDNS 中文语言包
               - `bind-host`: BIND DNS 服务器宿主支持
-              - `luci-app-store`: iStore 软件中心
               - `luci-app-dae`: dae eBPF 高性能透明代理
               - `kmod-tun` / `kmod-iptunnel` / `kmod-wireguard`: VPN 隧道基础模块
               - `luci-app-ttyd` / `ttyd`: 网页终端
