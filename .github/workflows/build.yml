@@ -140,6 +140,7 @@ jobs:
 
           ln -sf ../v2ray/geosite.dat files/usr/share/dae/geosite.dat
           ln -sf ../v2ray/geoip.dat files/usr/share/dae/geoip.dat
+          [ -f files/etc/init.d/dae ] && chmod +x files/etc/init.d/dae
           ls -lh files/usr/share/v2ray/
 
       - name: Compile Firmware
@@ -218,7 +219,7 @@ jobs:
               - `luci-app-ddns`: 动态 DNS 配置界面
               - `luci-i18n-ddns-zh-cn`: DDNS 中文语言包
               - `bind-host`: BIND DNS 服务器宿主支持
-              - `luci-app-dae`: dae eBPF 高性能透明代理
+              - `luci-app-dae`: dae eBPF 高性能透明代理（内置 `GOMEMLIMIT=45MiB` 内存黄金值调优）
               - `Loyalsoldier GeoData`: 集成 Loyalsoldier 增强版 `geosite.dat` & `geoip.dat`（内置 `geosite:gfw` 分流规则支持）
               - `kmod-tun` / `kmod-iptunnel` / `kmod-wireguard`: VPN 隧道基础模块
               - `luci-app-ttyd` / `ttyd`: 网页终端
